@@ -1,4 +1,4 @@
-# battleships in c++
+# Battleships in C++
 This is my take on battleships done entirely in c++. 
 
 ### Overview:
