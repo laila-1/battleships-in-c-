@@ -63,11 +63,14 @@ auto game_start = clock_type::now();
 
 //special colors
 
-sf::Color greyColor(128, 128, 128); // for user ships 
-sf::Color lightShipGrey(180, 180, 180); // for unhit user ships
+sf::Color greyColor(101, 115, 123); // for user ships 
+sf::Color lightShipGrey(132, 143, 149); // for unhit user ships
 sf::Color lightGrey(220, 220, 220); 
-sf::Color unhit(102, 140, 217);  // for unhit areas of comp board and ocean of user
-sf::Color oceanBlue(18, 78, 201);  // for misses on either side
+sf::Color unhit(104, 146, 213);  // for unhit areas of comp board and ocean of user
+sf::Color oceanBlue(66, 119, 202);  // for misses on either side
+sf::Color buttonBlue(70, 130, 180);
+sf::Color myRed(220, 20, 60);
+sf::Color myGreen(29, 185, 84);
 
 // 0--> unhit ocean (unhit)
 //1--> unhit ship (lightShipGrey)
@@ -107,9 +110,9 @@ namebox.setPosition(sf::Vector2f(50.f, 165.f));
 namebox.setFillColor(lightGrey);
 
 
-sf::RectangleShape enterbutton(sf::Vector2f(100, 40));
-enterbutton.setPosition(sf::Vector2f(300.f, 160.f));
-enterbutton.setFillColor(sf::Color::Green);
+sf::RectangleShape enterbutton(sf::Vector2f(80, 40));
+enterbutton.setPosition(sf::Vector2f(300.f, 158.f));
+enterbutton.setFillColor(buttonBlue);
 
 
 sf::Text text_on_enterbutton(font, "Enter", 20);
@@ -120,7 +123,7 @@ text_on_enterbutton.setFillColor(sf::Color::White);
 
 sf::RectangleShape easybutton(sf::Vector2f(150.f, 50.f));
 easybutton.setPosition(sf::Vector2f(50.f, 180.f));
-easybutton.setFillColor(sf::Color::Green);
+easybutton.setFillColor(myGreen);
 
 
 sf::Text text_on_easybutton(font, "Easy", 24);
@@ -130,7 +133,7 @@ text_on_easybutton.setPosition(sf::Vector2f(95.f, 190.f));
 
 sf::RectangleShape hardbutton(sf::Vector2f(150.f, 50.f));
 hardbutton.setPosition(sf::Vector2f(250.f, 180.f));
-hardbutton.setFillColor(sf::Color::Red);
+hardbutton.setFillColor(myRed);
 
 
 sf::Text text_on_hardbutton(font, "Hard", 24);
@@ -160,7 +163,7 @@ text_on_autobutton.setPosition(sf::Vector2f(265.f, 110.f));
 
 sf::RectangleShape nextbutton(sf::Vector2f(100.f, 50.f));
 nextbutton.setPosition(sf::Vector2f(1250.f, 820.f));
-nextbutton.setFillColor(sf::Color::Green);
+nextbutton.setFillColor(buttonBlue);
 
 
 sf::Text text_on_nextbutton(font, "Next", 24);
@@ -181,7 +184,7 @@ gameover_text.setPosition(sf::Vector2f(300.f, 100.f));
 
 sf::RectangleShape newgamebutton(sf::Vector2f(250.f, 120.f));
 newgamebutton.setPosition(sf::Vector2f(300.f, 250.f));
-newgamebutton.setFillColor(sf::Color::Green);
+newgamebutton.setFillColor(myGreen);
 
 
 sf::Text newgametext(font, "New Game", 32);
@@ -192,7 +195,7 @@ newgametext.setPosition(sf::Vector2f(340.f, 290.f));
 
 sf::RectangleShape endgamebutton(sf::Vector2f(250.f, 120.f));
 endgamebutton.setPosition(sf::Vector2f(800.f, 250.f));
-endgamebutton.setFillColor(sf::Color::Red);
+endgamebutton.setFillColor(myRed);
 
 
 sf::Text endgametext(font, "End Game", 32);
@@ -818,16 +821,16 @@ if (const auto* mouseEvent = event->getIf<sf::Event::MouseButtonPressed>()) {
                     if (computer[row][col] == 1) {
                         show_comp[row][col] = 2; 
                         ships_comp--;
-                        feedback_text.setFillColor(sf::Color::Green);
+                        feedback_text.setFillColor(myGreen);
                         feedback_text.setString("                     You hit a ship!"); // a lot of spaces just to center the text
                     } else {
                         show_comp[row][col] = 3;  
-                        feedback_text.setFillColor(sf::Color::Red);
+                        feedback_text.setFillColor(myRed);
                         feedback_text.setString("                      You missed.");
-                    }
-                    turn = 1;  
-                    computersturn = true;
-                    compturnstart = std::chrono::steady_clock::now(); 
+                        turn = 1;
+                        computersturn = true;
+                        compturnstart = std::chrono::steady_clock::now(); 
+                    }  
                 }
 
             }
@@ -930,20 +933,22 @@ if (user[grow][gcolumn] != 2 && user[grow][gcolumn] != 3) break;
 }
 
 if (user[grow][gcolumn] == 1){
-    feedback_text.setFillColor(sf::Color::Red);
+    feedback_text.setFillColor(myRed);
     feedback_text.setString("               Computer has hit a ship.");
     ships_user--;
     user[grow][gcolumn] = 2;
     ship_lockdown = 1;
-    lockdown_row = grow; lockdown_col = gcolumn;}
+    lockdown_row = grow; lockdown_col = gcolumn;
+    compturnstart = std::chrono::steady_clock::now(); 
+}
 else if (user[grow][gcolumn] == 0){
-    feedback_text.setFillColor(sf::Color::Green);
+    feedback_text.setFillColor(myGreen);
     feedback_text.setString("                 Computer missed.");
     user[grow][gcolumn] = 3;
+    turn = 0;
+    computersturn = false;
 
 }
-        turn = 0;
-        computersturn = false;
     }
 }
 }
